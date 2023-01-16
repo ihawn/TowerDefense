@@ -10,5 +10,7 @@ public abstract class PathfindingSurfaceController : MonoBehaviour
 
     public Vector3 SurfaceBounds { get { return Collider.bounds.size; } }
 
+    public List<PathfindingObstacleController> Obstacles { get; set; }
+
     public abstract void GenerateNodes();
 }

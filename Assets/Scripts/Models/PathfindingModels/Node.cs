@@ -14,13 +14,15 @@ public class Node
     public float H { get; set; }
     public bool Open { get; set; }
     public bool Closed { get; set; }
+    public bool IsBorderNode { get; set; }
 
 
-    public Node(Vector3 position)
+    public Node(Vector3 position, bool isBorderNode = false)
     {
         Position = position;
         ConnectedNodes = new List<NodeConnection>();
         Id = Guid.NewGuid().ToString();
+        IsBorderNode = isBorderNode;
     }
 }
 
