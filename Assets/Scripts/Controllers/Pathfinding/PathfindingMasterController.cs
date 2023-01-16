@@ -9,6 +9,8 @@ public class PathfindingMasterController : MonoBehaviour
 
     public List<PathfindingSurfaceController> AllSurfaceControllers { get; set; }
 
+    public List<PathfindingObstacleController> Obstacles { get; set; }
+
     void Start()
     {
         BakeNodes();
@@ -22,9 +24,11 @@ public class PathfindingMasterController : MonoBehaviour
     public void BakeNodes()
     {
         AllSurfaceControllers = FindObjectsOfType<PathfindingSurfaceController>().ToList();
+        Obstacles = FindObjectsOfType<PathfindingObstacleController>().ToList();
         AllNodes = new Dictionary<string, Node>();
         foreach (var surfaceController in AllSurfaceControllers)
         {
+            surfaceController.Obstacles = Obstacles;
             surfaceController.GenerateNodes();
             surfaceController.Nodes.ForEach(n => AllNodes[n.Id] = n);
         }

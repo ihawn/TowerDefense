@@ -31,13 +31,33 @@ public class RectangularPathfindingSurfaceController : PathfindingSurfaceControl
             x += xStep)
             for (float z = transform.position.z - SurfaceBounds.z / 2 + BorderBuffer;
                 z < transform.position.z + SurfaceBounds.z / 2 - BorderBuffer;
-                z += xStep)
-                Nodes.Add(new Node(new Vector3(x, transform.position.y, z)));
-        
-            
-        for(int i = 0; i < Nodes.Count; i++)
+                z += zStep)
+            {
+                Vector3 position = new Vector3(x, transform.position.y, z);
+
+                Collider colliderContainingPoint = Obstacles
+                    .Select(x => x.Boundary)
+                    .FirstOrDefault(x => Vector3.Distance(x.ClosestPoint(position), position) < 0.001f);
+
+                if (colliderContainingPoint != null)
+                {
+                    if (colliderContainingPoint is BoxCollider)
+                        Nodes.AddRange(
+                            GenerationHelper.GenerateWeightedPointsArountRect((BoxCollider)colliderContainingPoint, position, NodeDensity / 4f)
+                                .Select(pos => new Node(pos, isBorderNode: true))
+                        );
+                }
+                else
+                    Nodes.Add(new Node(position));
+            }
+
+
+        for (int i = 0; i < Nodes.Count; i++)
             Nodes[i].ConnectedNodes = Nodes
                 .Where(n => n.Id != Nodes[i].Id)
+                .Where(n => !GenerationHelper.LinePassesThroughColliders(
+                    Obstacles.Select(o => o.Boundary).ToList(), Nodes[i].Position, n.Position)
+                )
                 .Select(n => new NodeConnection(n, Vector3.Distance(Nodes[i].Position, n.Position)))
                 .OrderBy(c => c.EdgeWeight)
                 .Take(ConnectionsPerNode)
