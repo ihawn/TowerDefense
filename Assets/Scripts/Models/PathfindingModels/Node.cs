@@ -1,18 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class Node : MonoBehaviour
+public class Node
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public List<NodeConnection> ConnectedNodes { get; set; }
+    public Vector3 Position { get; set; }
+    public string Id { get; set; }
 
-    // Update is called once per frame
-    void Update()
+    public Node(Vector3 position)
     {
-        
+        Position = position;
+        ConnectedNodes = new List<NodeConnection>();
+        Id = Guid.NewGuid().ToString();
     }
 }
