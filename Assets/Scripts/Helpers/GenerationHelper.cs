@@ -28,15 +28,18 @@ public static class GenerationHelper
         return points;
     }
 
-    public static bool LinePassesThroughColliders(List<Collider> colliders, Vector3 point1, Vector3 point2, float step = 0.1f)
+    public static bool LinePassesThroughColliders(List<Collider> colliders, Vector3 point1, Vector3 point2)
     {
-        foreach(Collider collider in colliders)
+        foreach (Collider collider in colliders)
+        {
+            float step = collider.bounds.size.magnitude / 5f;
             for (float s = 0; s <= 1; s += step)
             {
                 Vector3 probe = point1 * s + point2 * (1 - s);
                 if (Vector3.Distance(collider.ClosestPoint(probe), probe) < 0.001f)
                     return true;
             }
+        }
 
         return false;
     }

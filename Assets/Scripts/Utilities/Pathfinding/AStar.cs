@@ -7,7 +7,7 @@ using C5;
 
 public static class AStar
 {
-    public static List<Node> GetShortestPath(Node start, Node end, Dictionary<string, Node> allNodes)
+    public static Path GetShortestPath(Node start, Node end, Dictionary<string, Node> allNodes)
     {
         List<Node> path = new List<Node>();
         var openHeap = new IntervalHeap<Node>(new NodeComparer());
@@ -58,6 +58,6 @@ public static class AStar
             allNodes[s].H = 0;
         }
 
-        return path;
+        return new Path(path);
     }
 }

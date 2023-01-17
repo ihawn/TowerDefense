@@ -8,6 +8,7 @@ public class RectangularPathfindingSurfaceController : PathfindingSurfaceControl
     public int NodeDensity = 10;
     public int ConnectionsPerNode = 8;
     public float BorderBuffer = 0.2f;
+    public bool DrawDebugPaths;
 
     void Awake()
     {
@@ -16,7 +17,8 @@ public class RectangularPathfindingSurfaceController : PathfindingSurfaceControl
 
     void Update()
     {
-        DrawNodeConnectionsDebug();
+        if (DrawDebugPaths)
+            DrawNodeConnectionsDebug();
     }
 
     public override void GenerateNodes()
@@ -43,7 +45,7 @@ public class RectangularPathfindingSurfaceController : PathfindingSurfaceControl
                 {
                     if (colliderContainingPoint is BoxCollider)
                         Nodes.AddRange(
-                            GenerationHelper.GenerateWeightedPointsArountRect((BoxCollider)colliderContainingPoint, position, NodeDensity / 4f)
+                            GenerationHelper.GenerateWeightedPointsArountRect((BoxCollider)colliderContainingPoint, position, NodeDensity / 100f)
                                 .Select(pos => new Node(pos, isBorderNode: true))
                         );
                 }
@@ -51,17 +53,21 @@ public class RectangularPathfindingSurfaceController : PathfindingSurfaceControl
                     Nodes.Add(new Node(position));
             }
 
-
         for (int i = 0; i < Nodes.Count; i++)
+        {
+            List<Collider> closeObstacles = Obstacles.Where(o =>
+                Vector3.Distance(o.Boundary.ClosestPoint(Nodes[i].Position), Nodes[i].Position)
+                < ObstacleConsiderationThresholdDistance)
+                .Select(o => o.Boundary).ToList();
+
             Nodes[i].ConnectedNodes = Nodes
                 .Where(n => n.Id != Nodes[i].Id)
-                .Where(n => !GenerationHelper.LinePassesThroughColliders(
-                    Obstacles.Select(o => o.Boundary).ToList(), Nodes[i].Position, n.Position)
-                )
+                .Where(n => !GenerationHelper.LinePassesThroughColliders(closeObstacles, Nodes[i].Position, n.Position))
                 .Select(n => new NodeConnection(n, Vector3.Distance(Nodes[i].Position, n.Position)))
                 .OrderBy(c => c.EdgeWeight)
                 .Take(ConnectionsPerNode)
                 .ToList();
+        }
     }
 
     void DrawNodeConnectionsDebug()
