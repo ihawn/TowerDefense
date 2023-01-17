@@ -12,5 +12,7 @@ public abstract class PathfindingSurfaceController : MonoBehaviour
 
     public List<PathfindingObstacleController> Obstacles { get; set; }
 
+    public float ObstacleConsiderationThresholdDistance { get; set; }
+
     public abstract void GenerateNodes();
 }
