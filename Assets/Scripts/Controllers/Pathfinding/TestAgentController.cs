@@ -21,11 +21,14 @@ public class TestAgentController : MonoBehaviour
 
     void Update()
     {
+        if (AllNodes == null || !AllNodes.Any())
+            return;
+
         if(Path == null || Distance > Path.PathLength || !Path.Distances.Any())
         {
             Distance = 0;
-            EndKey = StartKey ?? AllNodes.Keys.OrderBy(x => Random.Range(0f, 1f)).First();
-            StartKey = AllNodes.Keys.Where(x => x != EndKey).OrderBy(x => Random.Range(0f, 1f)).First();
+            EndKey = StartKey ?? AllNodes.Keys/*.OrderBy(x => Random.Range(0f, 100f))*/.First();
+            StartKey = AllNodes.Keys.Where(x => x != EndKey)/*.OrderBy(x => Random.Range(0f, 100f))*/.Last();
             Node start = AllNodes[StartKey];
             Node end = AllNodes[EndKey];
             Path = AStar.GetShortestPath(start, end, AllNodes);

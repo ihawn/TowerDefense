@@ -32,7 +32,7 @@ public static class GenerationHelper
     {
         foreach (Collider collider in colliders)
         {
-            float step = collider.bounds.size.magnitude / 5f;
+            float step = collider.bounds.size.magnitude / 50f;
             for (float s = 0; s <= 1; s += step)
             {
                 Vector3 probe = point1 * s + point2 * (1 - s);

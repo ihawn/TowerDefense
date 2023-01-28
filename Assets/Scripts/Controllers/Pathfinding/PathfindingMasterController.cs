@@ -5,22 +5,20 @@ using UnityEngine;
 
 public class PathfindingMasterController : MonoBehaviour
 {
-    public float ObstacleConsiderationThresholdDistance;
     public List<TestAgentController> TestAgents; // temporary for debugging
 
     public Dictionary<string, Node> AllNodes { get; set; }
     public List<PathfindingSurfaceController> AllSurfaceControllers { get; set; }
     public List<PathfindingObstacleController> Obstacles { get; set; }
 
+    public GameObject start;
+    public GameObject end;
+
 
     void Start()
     {
         UnityEditor.SceneView.FocusWindowIfItsOpen(typeof(UnityEditor.SceneView));
-        BakeNodes();
-
-        // temporary for debugging
-        for (int i = 0; i < TestAgents.Count; i++)
-            TestAgents[i].AllNodes = AllNodes;
+        StartCoroutine(BakeDelay());
     }
 
     void Update()
@@ -39,15 +37,25 @@ public class PathfindingMasterController : MonoBehaviour
         foreach (var surfaceController in AllSurfaceControllers)
         {
             surfaceController.Obstacles = Obstacles;
-            surfaceController.ObstacleConsiderationThresholdDistance = ObstacleConsiderationThresholdDistance;
             surfaceController.GenerateNodes();
             surfaceController.Nodes.ForEach(n => AllNodes[n.Id] = n);
         }
+        AllSurfaceControllers.ForEach(s => s.ConnectNodes());
+
+        // temporary for debugging
+        for (int i = 0; i < TestAgents.Count; i++)
+            TestAgents[i].AllNodes = AllNodes;
     }
 
     public static void DrawPathDebug(List<Node> path)
     {
         for (int i = 0; i < path.Count - 1; i++)
             Debug.DrawLine(path[i].Position, path[i + 1].Position, Color.yellow);
+    }
+
+    IEnumerator BakeDelay()
+    {
+        yield return new WaitForSeconds(0.3f);
+        BakeNodes();
     }
 }
