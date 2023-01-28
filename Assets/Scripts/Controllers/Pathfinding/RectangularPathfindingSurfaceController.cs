@@ -5,10 +5,12 @@ using System.Linq;
 
 public class RectangularPathfindingSurfaceController : PathfindingSurfaceController
 {
-    public int NodeDensity = 10;
+    public int NodeDensityX = 10;
+    public int NodeDensityZ = 10;
     public int ConnectionsPerNode = 8;
-    public float BorderBuffer = 0.2f;
     public bool DrawDebugPaths;
+
+    Vector3 BoxBounds { get { return ((BoxCollider)Collider).size / 2f; } }
 
     void Awake()
     {
@@ -17,25 +19,23 @@ public class RectangularPathfindingSurfaceController : PathfindingSurfaceControl
 
     void Update()
     {
-        if (DrawDebugPaths)
+        if (DrawDebugPaths && Nodes != null)
             DrawNodeConnectionsDebug();
     }
 
     public override void GenerateNodes()
     {
-        Nodes = new List<Node>();
+        if(Nodes == null)
+            Nodes = new List<Node>();
 
-        float xStep = SurfaceBounds.x / NodeDensity;
-        float zStep = SurfaceBounds.z / NodeDensity;
+        float xStep = BoxBounds.x / NodeDensityX;
+        float zStep = BoxBounds.z / NodeDensityZ;
 
-        for (float x = transform.position.x - SurfaceBounds.x / 2 + BorderBuffer;
-            x < transform.position.x + SurfaceBounds.x / 2 - BorderBuffer;
-            x += xStep)
-            for (float z = transform.position.z - SurfaceBounds.z / 2 + BorderBuffer;
-                z < transform.position.z + SurfaceBounds.z / 2 - BorderBuffer;
-                z += zStep)
+        //Create nodes
+        for (float x = -BoxBounds.x; x < BoxBounds.x; x += xStep)
+            for (float z = -BoxBounds.z; z < BoxBounds.z; z += zStep)
             {
-                Vector3 position = new Vector3(x, transform.position.y, z);
+                Vector3 position = Collider.transform.TransformPoint(new Vector3(x, 0, z) + ((BoxCollider)Collider).center);
 
                 Collider colliderContainingPoint = Obstacles
                     .Select(x => x.Boundary)
@@ -45,14 +45,33 @@ public class RectangularPathfindingSurfaceController : PathfindingSurfaceControl
                 {
                     if (colliderContainingPoint is BoxCollider)
                         Nodes.AddRange(
-                            GenerationHelper.GenerateWeightedPointsArountRect((BoxCollider)colliderContainingPoint, position, NodeDensity / 100f)
-                                .Select(pos => new Node(pos, isBorderNode: true))
+                            GenerationHelper.GenerateWeightedPointsArountRect(
+                                (BoxCollider)colliderContainingPoint, position, 0.5f * (NodeDensityX + NodeDensityZ) / 100f
+                            )
+                            .Where(x => Vector3.Distance(colliderContainingPoint.ClosestPoint(x), x) < 0.001f)
+                            .Select(pos => new Node(pos, isBorderNode: true))
                         );
                 }
                 else
                     Nodes.Add(new Node(position));
             }
 
+        //Determine which nodes are shared between surfaces
+        for(int i = 0; i < ConnectedSurfaces.Count; i++)
+        {
+            BoxCollider bounds = ConnectedSurfaces[i].GetComponent<BoxCollider>();
+            List<Node> sharedNodes = Nodes
+                .Where(n => Vector3.Distance(bounds.ClosestPoint(n.Position), n.Position) < 0.001f)
+                .ToList();
+
+            if (ConnectedSurfaces[i].Nodes == null)
+                ConnectedSurfaces[i].Nodes = new List<Node>();
+            ConnectedSurfaces[i].Nodes.AddRange(sharedNodes);
+        }
+    }
+
+    public override void ConnectNodes()
+    {
         for (int i = 0; i < Nodes.Count; i++)
         {
             List<Collider> closeObstacles = Obstacles.Where(o =>
@@ -64,6 +83,7 @@ public class RectangularPathfindingSurfaceController : PathfindingSurfaceControl
                 .Where(n => n.Id != Nodes[i].Id)
                 .Where(n => !GenerationHelper.LinePassesThroughColliders(closeObstacles, Nodes[i].Position, n.Position))
                 .Select(n => new NodeConnection(n, Vector3.Distance(Nodes[i].Position, n.Position)))
+                .Where(c => c.EdgeWeight <= ObstacleConsiderationThresholdDistance)
                 .OrderBy(c => c.EdgeWeight)
                 .Take(ConnectionsPerNode)
                 .ToList();
