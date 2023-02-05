@@ -1,18 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class Node : MonoBehaviour
+public class Node
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public List<NodeConnection> ConnectedNodes { get; set; }
+    public Vector3 Position { get; set; }
+    public string Id { get; set; }
+    public string ParentId { get; set; }
+    public float F { get; set; }
+    public float G { get; set; }
+    public float H { get; set; }
+    public bool Open { get; set; }
+    public bool Closed { get; set; }
+    public bool IsBorderNode { get; set; }
 
-    // Update is called once per frame
-    void Update()
+
+    public Node(Vector3 position, bool isBorderNode = false)
     {
-        
+        Position = position;
+        ConnectedNodes = new List<NodeConnection>();
+        Id = Guid.NewGuid().ToString();
+        IsBorderNode = isBorderNode;
     }
 }
+
+public class NodeComparer : IComparer<Node>
+{
+    public int Compare(Node x, Node y)
+    {
+        return x.F.CompareTo(y.F);
+    }
+}
+
