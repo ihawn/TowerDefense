@@ -21,6 +21,9 @@ public class RectangularPathfindingSurfaceController : PathfindingSurfaceControl
     {
         if (DrawDebugPaths && Nodes != null)
             DrawNodeConnectionsDebug();
+
+        Ray ray = new Ray();
+        Physics.Raycast(ray, 100);
     }
 
     public override void GenerateNodes()
