@@ -11,10 +11,6 @@ public class PathfindingMasterController : MonoBehaviour
     public List<PathfindingSurfaceController> AllSurfaceControllers { get; set; }
     public List<PathfindingObstacleController> Obstacles { get; set; }
 
-    public GameObject start;
-    public GameObject end;
-
-
     void Start()
     {
         UnityEditor.SceneView.FocusWindowIfItsOpen(typeof(UnityEditor.SceneView));
