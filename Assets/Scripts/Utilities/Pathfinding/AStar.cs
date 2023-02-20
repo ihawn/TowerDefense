@@ -7,12 +7,14 @@ using C5;
 
 public static class AStar
 {
-    public static Path GetShortestPath(Node start, Node end, Dictionary<string, Node> allNodes)
+    public static Path GetShortestPath(string startId, string endId, Dictionary<string, Node> allNodes)
     {
         List<Node> path = new List<Node>();
         var openHeap = new IntervalHeap<Node>(new NodeComparer());
-        start.Open = true;
-        openHeap.Add(start);
+        allNodes[startId].Open = true;
+        openHeap.Add(allNodes[startId]);
+        
+        var nod = allNodes[startId];
 
         Node current;
 
@@ -22,9 +24,9 @@ public static class AStar
             allNodes[current.Id].Open = false;
             allNodes[current.Id].Closed = true;
 
-            if (current.Id == end.Id)
+            if (current.Id == endId)
             {
-                while (current.Id != start.Id)
+                while (current.Id != startId)
                 {
                     path.Add(current);
                     current = allNodes[current.ParentId];
@@ -39,7 +41,7 @@ public static class AStar
                 if (allNodes[i].Open || allNodes[i].Closed) { continue; }
 
                 allNodes[i].G = allNodes[current.Id].G + nc.EdgeWeight;
-                allNodes[i].F = allNodes[i].G + Vector3.Distance(allNodes[i].Position, end.Position);
+                allNodes[i].F = allNodes[i].G + Vector3.Distance(allNodes[i].Position, allNodes[endId].Position);
                 allNodes[i].Open = true;
                 allNodes[i].Closed = false;
                 allNodes[i].ParentId = current.Id;
@@ -47,7 +49,7 @@ public static class AStar
             }
         }
 
-        path.Add(start);
+        path.Add(allNodes[startId]);
 
         foreach (string s in allNodes.Keys)
         {
@@ -58,6 +60,7 @@ public static class AStar
             allNodes[s].H = 0;
         }
 
+        path.Reverse();
         return new Path(path);
     }
 }

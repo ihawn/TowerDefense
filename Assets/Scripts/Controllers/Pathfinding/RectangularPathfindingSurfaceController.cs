@@ -82,7 +82,7 @@ public class RectangularPathfindingSurfaceController : PathfindingSurfaceControl
                 < ObstacleConsiderationThresholdDistance)
                 .Select(o => o.Boundary).ToList();
 
-            Nodes[i].ConnectedNodes = Nodes
+            List<NodeConnection> conections = Nodes
                 .Where(n => n.Id != Nodes[i].Id)
                 .Where(n => !GenerationHelper.LinePassesThroughColliders(closeObstacles, Nodes[i].Position, n.Position))
                 .Select(n => new NodeConnection(n, Vector3.Distance(Nodes[i].Position, n.Position)))
@@ -90,6 +90,8 @@ public class RectangularPathfindingSurfaceController : PathfindingSurfaceControl
                 .OrderBy(c => c.EdgeWeight)
                 .Take(ConnectionsPerNode)
                 .ToList();
+
+            Nodes[i].ConnectedNodes = conections;
         }
     }
 

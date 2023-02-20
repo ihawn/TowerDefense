@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class PathfindingMasterController : MonoBehaviour
 {
-    public List<TestAgentController> TestAgents; // temporary for debugging
-
     public Dictionary<string, Node> AllNodes { get; set; }
+    public Node GoalNode { get; set; }
     public List<PathfindingSurfaceController> AllSurfaceControllers { get; set; }
     public List<PathfindingObstacleController> Obstacles { get; set; }
+    public GameManager GameManager { get; set; }
 
     void Start()
     {
@@ -19,10 +19,7 @@ public class PathfindingMasterController : MonoBehaviour
 
     void Update()
     {
-        // temporary for debugging
-        foreach (var agent in TestAgents)
-            if(agent.Path != null)
-                DrawPathDebug(agent.Path.Nodes);
+
     }
 
     public void BakeNodes()
@@ -38,9 +35,29 @@ public class PathfindingMasterController : MonoBehaviour
         }
         AllSurfaceControllers.ForEach(s => s.ConnectNodes());
 
+        //verify that all node connections are mutual
+        foreach(KeyValuePair<string, Node> kvp in AllNodes)
+        {
+
+            for (int j = 0; j < AllNodes[kvp.Key].ConnectedNodes.Count; j++)
+                AllNodes[kvp.Key].ConnectedNodes[j].Node.ConnectedNodes.Add(
+                    new NodeConnection(
+                        AllNodes[kvp.Key],
+                        Vector3.Distance(AllNodes[kvp.Key].Position, AllNodes[kvp.Key].ConnectedNodes[j].Node.Position)
+                    )
+                );
+        }
+       foreach (KeyValuePair<string, Node> kvp in AllNodes)
+            AllNodes[kvp.Key].ConnectedNodes = 
+                AllNodes[kvp.Key].ConnectedNodes.GroupBy(x => x.Node.Id).Select(y => y.First()).ToList();
+
+
+
+        Vector3 goalPosition = FindObjectOfType<GoalController>().gameObject.transform.position;
+        GoalNode = NodeExtensions.GetShortestNodeToPoint(AllNodes.Values.ToList(), goalPosition);
+
         // temporary for debugging
-        for (int i = 0; i < TestAgents.Count; i++)
-            TestAgents[i].AllNodes = AllNodes;
+        GameManager.SpawnControllers[0].SpawnAgent("TestAgent");
     }
 
     public static void DrawPathDebug(List<Node> path)
