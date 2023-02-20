@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 
 public class Node
 {
@@ -23,6 +24,15 @@ public class Node
         ConnectedNodes = new List<NodeConnection>();
         Id = Guid.NewGuid().ToString();
         IsBorderNode = isBorderNode;
+    }
+}
+
+public static class NodeExtensions
+{
+    public static Node GetShortestNodeToPoint(List<Node> nodes, Vector3 point)
+    {
+        return nodes.Aggregate((a, b) =>
+            Vector3.Distance(a.Position, point) < Vector3.Distance(b.Position, point) ? a : b);
     }
 }
 

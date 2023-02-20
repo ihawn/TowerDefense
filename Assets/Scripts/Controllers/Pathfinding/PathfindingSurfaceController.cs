@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public abstract class PathfindingSurfaceController : MonoBehaviour
 {
@@ -17,7 +18,10 @@ public abstract class PathfindingSurfaceController : MonoBehaviour
 
     public abstract void GenerateNodes();
 
+    public abstract void AddSharedNodes();
+
     public abstract void ConnectNodes();
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -28,6 +32,10 @@ public abstract class PathfindingSurfaceController : MonoBehaviour
         if(adjacentSurface != null)
         {
             ConnectedSurfaces.Add(adjacentSurface);
+
+            if(adjacentSurface.ConnectedSurfaces == null)
+                adjacentSurface.ConnectedSurfaces = new List<PathfindingSurfaceController>();
+            adjacentSurface.ConnectedSurfaces.Add(this);
         }
     }
 }
