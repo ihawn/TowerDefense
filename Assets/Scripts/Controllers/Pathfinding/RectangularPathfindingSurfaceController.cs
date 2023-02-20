@@ -58,18 +58,18 @@ public class RectangularPathfindingSurfaceController : PathfindingSurfaceControl
                 else
                     Nodes.Add(new Node(position));
             }
+    }
 
-        //Determine which nodes are shared between surfaces
-        for(int i = 0; i < ConnectedSurfaces.Count; i++)
+    public override void AddSharedNodes()
+    {
+        for (int i = 0; i < ConnectedSurfaces.Count; i++)
         {
             BoxCollider bounds = ConnectedSurfaces[i].GetComponent<BoxCollider>();
-            List<Node> sharedNodes = Nodes
+            List<Node> sharedNodesFromThisSurface = Nodes
                 .Where(n => Vector3.Distance(bounds.ClosestPoint(n.Position), n.Position) < 0.001f)
                 .ToList();
 
-            if (ConnectedSurfaces[i].Nodes == null)
-                ConnectedSurfaces[i].Nodes = new List<Node>();
-            ConnectedSurfaces[i].Nodes.AddRange(sharedNodes);
+            ConnectedSurfaces[i].Nodes.AddRange(sharedNodesFromThisSurface);
         }
     }
 

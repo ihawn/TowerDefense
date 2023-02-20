@@ -33,6 +33,7 @@ public class PathfindingMasterController : MonoBehaviour
             surfaceController.GenerateNodes();
             surfaceController.Nodes.ForEach(n => AllNodes[n.Id] = n);
         }
+        AllSurfaceControllers.ForEach(s => s.AddSharedNodes());
         AllSurfaceControllers.ForEach(s => s.ConnectNodes());
 
         //verify that all node connections are mutual
