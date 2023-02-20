@@ -4,9 +4,22 @@ using UnityEngine;
 
 public abstract class AgentController : MonoBehaviour
 {
-    public Agent Agent { get; set; }
+    public float Speed;
+    public float Distance;
 
-    public GameManager GameManager { get; set; }
+    public Path Path { get; set; }
+    public Dictionary<string, Node> AllNodes { get { return GlobalReferences.gm.PathfindingMasterController.AllNodes; } }
+
+    public Node StartNode { get; set; }
+    public Node EndNode { get; set; }
+
+    private void OnEnable()
+    {
+        Distance = 0;
+    }
+
 
     public abstract void ConnectToPathGraph();
+
+    public bool IsPossibleTarget;
 }

@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class ObjectPooler : MonoBehaviour
 {
     public string Name;
-    public GameManager gameManager;
 
     public GameObject objectToPool;
     public int poolSize;
@@ -25,17 +25,18 @@ public class ObjectPooler : MonoBehaviour
 
     public GameObject GetPooledObject()
     {
-        for (int i = 0; i < pooledObjects.Count; i++)
+        GameObject obj = pooledObjects.FirstOrDefault(x => !x.activeInHierarchy);
+
+        if (obj == null)
         {
-            if (!pooledObjects[i].activeInHierarchy)
-            {
-                return pooledObjects[i];
-            }
+            obj = Instantiate(objectToPool);
+            pooledObjects.Add(obj);
         }
 
-        GameObject obj = Instantiate(objectToPool);
-        obj.SetActive(false);
-        pooledObjects.Add(obj);
+        obj.SetActive(true);
+        
+        if(obj.GetComponent<AgentController>() != null)
+            GlobalReferences.gm.AgentMasterController.Agents.Add(obj.GetComponent<AgentController>());
 
         return obj;
     }

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-
     public Dictionary<string, ObjectPooler> ObjectPoolers { get; set; }
     public GameObject MasterPooler;
 
@@ -12,12 +11,13 @@ public class GameManager : MonoBehaviour
     public GameObject MasterSpawner;
 
     public PathfindingMasterController PathfindingMasterController;
+    public AgentMasterController AgentMasterController;
 
-    void Start()
+    void Awake()
     {
+        GlobalReferences.gm = this;
         InitPoolers();
         InitSpawners();
-        InitPathfinder();
     }
 
     void Update()
@@ -35,7 +35,6 @@ public class GameManager : MonoBehaviour
             ObjectPooler pooler = child.GetComponent<ObjectPooler>();
             if (pooler != null)
             {
-                pooler.gameManager = this;
                 ObjectPoolers[pooler.Name] = pooler;
             }
         }
@@ -51,14 +50,8 @@ public class GameManager : MonoBehaviour
             SpawnController spawner = child.GetComponent<SpawnController>();
             if (spawner != null)
             {
-                spawner.gameManager = this;
                 SpawnControllers.Add(spawner);
             }
         }
-    }
-
-    void InitPathfinder()
-    {
-        PathfindingMasterController.GameManager = this;
     }
 }

@@ -9,7 +9,7 @@ public class PathfindingMasterController : MonoBehaviour
     public Node GoalNode { get; set; }
     public List<PathfindingSurfaceController> AllSurfaceControllers { get; set; }
     public List<PathfindingObstacleController> Obstacles { get; set; }
-    public GameManager GameManager { get; set; }
+    public bool GraphBakeComplete { get; private set; }
 
     void Start()
     {
@@ -52,13 +52,10 @@ public class PathfindingMasterController : MonoBehaviour
             AllNodes[kvp.Key].ConnectedNodes = 
                 AllNodes[kvp.Key].ConnectedNodes.GroupBy(x => x.Node.Id).Select(y => y.First()).ToList();
 
-
-
         Vector3 goalPosition = FindObjectOfType<GoalController>().gameObject.transform.position;
         GoalNode = NodeExtensions.GetShortestNodeToPoint(AllNodes.Values.ToList(), goalPosition);
 
-        // temporary for debugging
-        GameManager.SpawnControllers[0].SpawnAgent("TestAgent");
+        GraphBakeComplete = true;
     }
 
     public static void DrawPathDebug(List<Node> path)
