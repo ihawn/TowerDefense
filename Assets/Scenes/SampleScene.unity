@@ -2005,7 +2005,7 @@ GameObject:
   - component: {fileID: 1275940039}
   - component: {fileID: 1275940038}
   - component: {fileID: 1275940037}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Grass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2158,7 +2158,7 @@ GameObject:
   - component: {fileID: 1318652771}
   - component: {fileID: 1318652770}
   - component: {fileID: 1318652769}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Grass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
