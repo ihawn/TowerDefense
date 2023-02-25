@@ -8,6 +8,8 @@ public abstract class StationaryDefense : MonoBehaviour
     public float ShootTimeThreshold;
     public float ShootDistanceThreshold;
     public float TrackingSpeed;
+    public EnemyTargetingPriority EnemyTargetingPriority;
+    public bool LineOfSightOnly;
 
     public AgentController Target;
     public ObjectPooler ProjectilePool;
@@ -19,7 +21,7 @@ public abstract class StationaryDefense : MonoBehaviour
 
     private void Update()
     {
-        if (Target == null)
+        if (Target == null || (Target != null && LineOfSightOnly && !TargetIsLOS()))
             Target = GetTarget();
         UpdateWeaponTransform();
     }
@@ -28,6 +30,19 @@ public abstract class StationaryDefense : MonoBehaviour
     public abstract AgentController GetTarget();
     public abstract bool CanShoot();
     public abstract void UpdateWeaponTransform();
+
+    public bool TargetIsLOS()
+    {
+        if(Target == null)
+            return false;
+
+        return !Physics.Linecast(transform.position, Target.transform.position);
+    }
+
+    public bool TargetIsLOS(AgentController targetCandidate)
+    {
+        return !Physics.Linecast(transform.position, targetCandidate.transform.position);
+    }
 
     public IEnumerator ShootLoop()
     {
@@ -42,4 +57,11 @@ public abstract class StationaryDefense : MonoBehaviour
             yield return null;
         }
     }
+}
+
+public enum EnemyTargetingPriority
+{
+    Random = 0,
+    ClosestToGoal = 1,
+    HighestHealth = 2
 }
