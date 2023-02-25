@@ -31,4 +31,11 @@ public class TestAgentController : AgentController
         StartNode = NodeExtensions.GetShortestNodeToPoint(AllNodes.Values.ToList(), transform.position);
         EndNode = GlobalReferences.gm.PathfindingMasterController.GoalNode;
     }
+
+    public override void Death()
+    {
+        GameObject particles = GlobalReferences.gm.ObjectPoolers["TestAgentDeathParticles"].GetPooledObject();
+        particles.transform.position = transform.position;
+        gameObject.SetActive(false);
+    }
 }
