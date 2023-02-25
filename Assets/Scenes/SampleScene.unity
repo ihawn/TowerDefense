@@ -779,6 +779,8 @@ MonoBehaviour:
   ShootTimeThreshold: 0.2
   ShootDistanceThreshold: 80
   TrackingSpeed: 7
+  EnemyTargetingPriority: 0
+  LineOfSightOnly: 0
   Target: {fileID: 0}
   ProjectilePool: {fileID: 0}
 --- !u!65 &467718960
@@ -1222,6 +1224,7 @@ MonoBehaviour:
   MasterSpawner: {fileID: 1946938213}
   PathfindingMasterController: {fileID: 1514126505}
   AgentMasterController: {fileID: 2065536209}
+  Goal: {fileID: 173404693}
 --- !u!4 &782517211
 Transform:
   m_ObjectHideFlags: 0
@@ -1482,6 +1485,8 @@ MonoBehaviour:
   ShootTimeThreshold: 0.2
   ShootDistanceThreshold: 80
   TrackingSpeed: 7
+  EnemyTargetingPriority: 0
+  LineOfSightOnly: 0
   Target: {fileID: 0}
   ProjectilePool: {fileID: 0}
 --- !u!65 &965631605
@@ -2335,6 +2340,8 @@ MonoBehaviour:
   ShootTimeThreshold: 0.2
   ShootDistanceThreshold: 80
   TrackingSpeed: 7
+  EnemyTargetingPriority: 0
+  LineOfSightOnly: 0
   Target: {fileID: 0}
   ProjectilePool: {fileID: 0}
 --- !u!65 &1426428870
@@ -3016,6 +3023,8 @@ MonoBehaviour:
   ShootTimeThreshold: 0.2
   ShootDistanceThreshold: 80
   TrackingSpeed: 7
+  EnemyTargetingPriority: 0
+  LineOfSightOnly: 0
   Target: {fileID: 0}
   ProjectilePool: {fileID: 0}
 --- !u!65 &1927805943

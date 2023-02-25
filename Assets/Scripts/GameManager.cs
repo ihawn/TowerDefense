@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     public PathfindingMasterController PathfindingMasterController;
     public AgentMasterController AgentMasterController;
 
+    public GameObject Goal;
+
     void Awake()
     {
         GlobalReferences.gm = this;

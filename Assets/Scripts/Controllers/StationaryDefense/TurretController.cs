@@ -17,7 +17,21 @@ public class TurretController : StationaryDefense
 
     public override AgentController GetTarget()
     {
-        var s = GlobalReferences.gm.AgentMasterController.Agents.FirstOrDefault(a => a.IsPossibleTarget && InRange(a));
+        List<AgentController> candidates = GlobalReferences.gm.AgentMasterController.Agents.Where(a => InRange(a) && (!LineOfSightOnly || TargetIsLOS(a))).ToList();
+        if (candidates.Count == 0) return null;
+
+        Vector3 goalPosition = GlobalReferences.gm.Goal.transform.position;
+        switch (EnemyTargetingPriority)
+        {
+            case EnemyTargetingPriority.Random:
+                return candidates.ElementAt(Random.Range(0, candidates.Count));
+
+            case EnemyTargetingPriority.ClosestToGoal:
+                return candidates.Aggregate((a, b) => Vector3.Distance(a.transform.position, goalPosition) < Vector3.Distance(b.transform.position, goalPosition) ? a : b);
+
+            case EnemyTargetingPriority.HighestHealth:
+                return candidates.Aggregate((a, b) => a.Health > b.Health ? a : b);
+        }    
         return GlobalReferences.gm.AgentMasterController.Agents.FirstOrDefault(a => a.IsPossibleTarget && InRange(a));
     }
 
@@ -53,7 +67,6 @@ public class TurretController : StationaryDefense
 
     bool InRange(AgentController a)
     {
-        float f = Vector3.Distance(a.transform.position, transform.position);
         return Vector3.Distance(a.transform.position, transform.position) <= ShootDistanceThreshold;
     }
 }
