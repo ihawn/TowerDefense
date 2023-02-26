@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class GoalController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public float Health;
+    public float MaxHealth;
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        
+        Health = MaxHealth;
     }
 }
