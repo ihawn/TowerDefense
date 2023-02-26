@@ -15,8 +15,14 @@ public class GameManager : MonoBehaviour
 
     public GameObject Goal;
 
+    public LayerMask LineOfSightMask;
+
+    public bool RunPathfinding;
+
     void Awake()
     {
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 60;
         GlobalReferences.gm = this;
         InitPoolers();
         InitSpawners();

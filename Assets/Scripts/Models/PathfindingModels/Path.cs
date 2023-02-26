@@ -25,7 +25,7 @@ public class Path
 
     public Vector3 GetPositionAlongPath(float distance)
     {
-        Node lastNodeTravelled = null;
+        Node lastNodeTraveled = null;
 
         distance = distance % PathLength;
         float travelledDistance = 0;
@@ -36,13 +36,13 @@ public class Path
             travelledDistance += Distances[i];
             if (travelledDistance > distance)
             {
-                lastNodeTravelled = Nodes[i];
+                lastNodeTraveled = Nodes[i];
                 j = i;
                 break;
             }
         }
 
         float remainder = Distances[j] - (travelledDistance - distance);
-        return lastNodeTravelled.Position + Vector3.Normalize(Nodes[j + 1].Position - lastNodeTravelled.Position) * remainder;
+        return lastNodeTraveled.Position + Vector3.Normalize(Nodes[j + 1].Position - lastNodeTraveled.Position) * remainder;
     }
 }
