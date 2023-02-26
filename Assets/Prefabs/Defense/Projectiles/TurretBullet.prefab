@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8364567107692471955}
   - component: {fileID: 7222480979106215276}
   - component: {fileID: -9133279966171208227}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TurretBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,6 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04b38a244692b3f4faa63af4d30ee654, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Lifetime: 1
   MoveSpeed: 10
   Damage: 30
   Collided: 0
