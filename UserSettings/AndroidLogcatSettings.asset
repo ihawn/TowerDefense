@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "23f94a20011c7ece",
         "name": "com.DefaultCompany.TowerDefense",
-        "processId": 8067,
+        "processId": 15426,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -18,6 +18,12 @@
             "deviceId": "23f94a20011c7ece",
             "name": "com.DefaultCompany.TowerDefense",
             "processId": 8067,
+            "exited": false
+        },
+        {
+            "deviceId": "23f94a20011c7ece",
+            "name": "com.DefaultCompany.TowerDefense",
+            "processId": 15426,
             "exited": false
         }
     ],
