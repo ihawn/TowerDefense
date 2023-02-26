@@ -34,9 +34,10 @@ public class ObjectPooler : MonoBehaviour
         }
 
         obj.SetActive(true);
-        
-        if(obj.GetComponent<AgentController>() != null)
-            GlobalReferences.gm.AgentMasterController.Agents.Add(obj.GetComponent<AgentController>());
+
+        AgentController agent = obj.GetComponent<AgentController>();
+        if (agent != null && !GlobalReferences.gm.AgentMasterController.Agents.Select(a => a.Id).Contains(agent.Id))
+            GlobalReferences.gm.AgentMasterController.Agents.Add(agent);
 
         return obj;
     }

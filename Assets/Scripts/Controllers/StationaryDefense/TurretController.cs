@@ -5,6 +5,8 @@ using System.Linq;
 
 public class TurretController : StationaryDefense
 {
+    public float ShotSpreadMaxAngle = 5;
+
     private void Start()
     {
         ProjectilePool = GlobalReferences.gm.ObjectPoolers["TurretBullet"];
@@ -15,38 +17,19 @@ public class TurretController : StationaryDefense
         return Target != null && InRange(Target);
     }
 
-    public override AgentController GetTarget()
-    {
-        List<AgentController> candidates = GlobalReferences.gm.AgentMasterController.Agents.Where(a => InRange(a) && (!LineOfSightOnly || TargetIsLOS(a))).ToList();
-        if (candidates.Count == 0) return null;
-
-        Vector3 goalPosition = GlobalReferences.gm.Goal.transform.position;
-        switch (EnemyTargetingPriority)
-        {
-            case EnemyTargetingPriority.Random:
-                return candidates.ElementAt(Random.Range(0, candidates.Count));
-
-            case EnemyTargetingPriority.ClosestToGoal:
-                return candidates.Aggregate((a, b) => Vector3.Distance(a.transform.position, goalPosition) < Vector3.Distance(b.transform.position, goalPosition) ? a : b);
-
-            case EnemyTargetingPriority.HighestHealth:
-                return candidates.Aggregate((a, b) => a.Health > b.Health ? a : b);
-        }    
-        return GlobalReferences.gm.AgentMasterController.Agents.FirstOrDefault(a => a.IsPossibleTarget && InRange(a));
-    }
-
     public override void Shoot()
     {
+        float randomAngle = Random.Range(0f, ShotSpreadMaxAngle);
+        Vector3 randomDirection = Random.insideUnitSphere;
+        Quaternion randomRotation = Quaternion.AngleAxis(randomAngle, randomDirection);
+
         GameObject bullet = ProjectilePool.GetPooledObject();
-        bullet.transform.rotation = transform.rotation;
+        bullet.transform.rotation = transform.rotation * randomRotation;
         bullet.transform.position = transform.position;
     }
 
     public override void UpdateWeaponTransform()
     {
-        if (Target != null && !Target.gameObject.activeInHierarchy)
-            Target = null;
-
         if (Target != null && InRange(Target))
         {
             transform.rotation = Quaternion.Lerp(
@@ -65,7 +48,7 @@ public class TurretController : StationaryDefense
         }
     }
 
-    bool InRange(AgentController a)
+    public override bool InRange(AgentController a)
     {
         return Vector3.Distance(a.transform.position, transform.position) <= ShootDistanceThreshold;
     }
