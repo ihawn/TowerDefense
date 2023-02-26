@@ -5,7 +5,9 @@ using System.Linq;
 
 
 public class TestAgentController : AgentController
-{ 
+{
+    private MeshRenderer meshRenderer;
+
     void Update()
     {
         if (AllNodes == null || !AllNodes.Any())
@@ -23,7 +25,17 @@ public class TestAgentController : AgentController
         Distance += Speed * Time.deltaTime;
 
         if (Path.Distances.Any())
+        {
+            if(!meshRenderer.enabled)
+                meshRenderer.enabled = true;
             transform.position = Path.GetPositionAlongPath(Distance);
+        }
+    }
+
+    public override void OnEnableEvents()
+    {
+        meshRenderer = GetComponent<MeshRenderer>();
+        meshRenderer.enabled = false;
     }
 
     public override void ConnectToPathGraph()
