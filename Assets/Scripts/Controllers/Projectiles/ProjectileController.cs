@@ -34,7 +34,7 @@ public abstract class ProjectileController : MonoBehaviour
     {
         if (collision.gameObject.tag != "DefenseObject")
         {
-            TestAgentController agent = collision.gameObject.GetComponent<TestAgentController>();
+            AgentController agent = collision.gameObject.GetComponent<AgentController>();
             if (agent != null && !Collided)
             {
                 agent.Health -= Damage;
