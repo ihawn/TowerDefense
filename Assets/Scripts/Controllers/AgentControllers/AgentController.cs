@@ -10,6 +10,7 @@ public abstract class AgentController : MonoBehaviour
     public float Health;
     public float MaxHealth;
     public bool IsPossibleTarget;
+    public bool IsStationary;
 
     private string id;
     public string Id
