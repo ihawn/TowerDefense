@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject Goal;
 
+    public LayerMask LineOfSightMask;
+
     public bool RunPathfinding;
 
     void Awake()

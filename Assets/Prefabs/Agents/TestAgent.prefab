@@ -101,7 +101,7 @@ MonoBehaviour:
   Speed: 1
   Distance: 0
   Health: 20
-  DeathParticles: {fileID: 0}
+  MaxHealth: 20
   IsPossibleTarget: 1
 --- !u!54 &743737786823930627
 Rigidbody:
