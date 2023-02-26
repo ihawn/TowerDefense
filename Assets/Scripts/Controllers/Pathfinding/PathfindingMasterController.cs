@@ -14,7 +14,10 @@ public class PathfindingMasterController : MonoBehaviour
     void Start()
     {
         UnityEditor.SceneView.FocusWindowIfItsOpen(typeof(UnityEditor.SceneView));
-        StartCoroutine(BakeDelay());
+        if (GlobalReferences.gm.RunPathfinding)
+        {
+            StartCoroutine(BakeDelay());
+        }
     }
 
     void Update()

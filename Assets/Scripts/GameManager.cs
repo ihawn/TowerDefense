@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject Goal;
 
+    public bool RunPathfinding;
+
     void Awake()
     {
         GlobalReferences.gm = this;
