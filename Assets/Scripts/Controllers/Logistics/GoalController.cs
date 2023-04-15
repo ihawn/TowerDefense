@@ -2,13 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GoalController : MonoBehaviour
+public class GoalController : Controller
 {
-    public float Health;
-    public float MaxHealth;
-
-    private void OnEnable()
+    public override void DoDeath()
     {
-        Health = MaxHealth;
+        Debug.Log("Game over");
+        GlobalReferences.gm.GameOver();
+    }
+
+    public override void ResetState()
+    {
+        
     }
 }

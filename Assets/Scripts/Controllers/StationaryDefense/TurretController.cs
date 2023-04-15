@@ -52,8 +52,19 @@ public class TurretController : StationaryDefense
         }
     }
 
+    public override void ResetState()
+    {
+        transform.rotation = Quaternion.identity;
+        Target = null;
+    }
+
     public override bool InRange(AgentController a)
     {
         return Vector3.Distance(a.transform.position, transform.position) <= ShootDistanceThreshold;
+    }
+
+    public override void DoDeath()
+    {
+        throw new System.NotImplementedException();
     }
 }
