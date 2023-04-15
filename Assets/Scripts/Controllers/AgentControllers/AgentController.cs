@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public abstract class AgentController : MonoBehaviour
+public abstract class AgentController : Controller
 {
     public float Speed;
     public float Distance;
-    public float Health;
-    public float MaxHealth;
     public bool IsPossibleTarget;
     public bool IsStationary;
 
@@ -27,6 +25,8 @@ public abstract class AgentController : MonoBehaviour
     public Node StartNode { get; set; }
     public Node EndNode { get; set; }
 
+    public bool CanMove { get { return GlobalReferences.gm.GameActive; } }
+
     private void OnEnable()
     {
         Health = MaxHealth;
@@ -34,7 +34,13 @@ public abstract class AgentController : MonoBehaviour
         OnEnableEvents();
     }
 
+    private void Update()
+    {
+        if (CanMove)
+            Movement();
+    }
+
     public abstract void OnEnableEvents();
+    public abstract void Movement();
     public abstract void ConnectToPathGraph();
-    public abstract void Death();
 }

@@ -98,11 +98,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff60f9f314364ef4e8c5f6daae7893be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 1
-  Distance: 0
   Health: 20
   MaxHealth: 20
+  Damage: 10
+  Speed: 1
+  Distance: 0
   IsPossibleTarget: 1
+  IsStationary: 0
 --- !u!54 &743737786823930627
 Rigidbody:
   m_ObjectHideFlags: 0

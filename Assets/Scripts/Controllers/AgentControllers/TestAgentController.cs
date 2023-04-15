@@ -8,7 +8,14 @@ public class TestAgentController : AgentController
 {
     private MeshRenderer meshRenderer;
 
-    void Update()
+
+    public override void OnEnableEvents()
+    {
+        meshRenderer = GetComponent<MeshRenderer>();
+        meshRenderer.enabled = false;
+    }
+
+    public override void Movement()
     {
         if (AllNodes == null || !AllNodes.Any())
             return;
@@ -26,16 +33,10 @@ public class TestAgentController : AgentController
 
         if (Path.Distances.Any())
         {
-            if(!meshRenderer.enabled)
+            if (!meshRenderer.enabled)
                 meshRenderer.enabled = true;
             transform.position = Path.GetPositionAlongPath(Distance);
         }
-    }
-
-    public override void OnEnableEvents()
-    {
-        meshRenderer = GetComponent<MeshRenderer>();
-        meshRenderer.enabled = false;
     }
 
     public override void ConnectToPathGraph()
@@ -44,10 +45,15 @@ public class TestAgentController : AgentController
         EndNode = GlobalReferences.gm.PathfindingMasterController.GoalNode;
     }
 
-    public override void Death()
+    public override void DoDeath()
     {
         GameObject particles = GlobalReferences.gm.ObjectPoolers["TestAgentDeathParticles"].GetPooledObject();
         particles.transform.position = transform.position;
+        gameObject.SetActive(false);
+    }
+
+    public override void ResetState()
+    {
         gameObject.SetActive(false);
     }
 }
