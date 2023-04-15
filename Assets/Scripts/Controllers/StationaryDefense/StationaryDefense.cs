@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public abstract class StationaryDefense : MonoBehaviour
+public abstract class StationaryDefense : Controller
 {
     public float ShootAngleThreshold;
     public float ShootTimeThreshold;
@@ -22,9 +22,14 @@ public abstract class StationaryDefense : MonoBehaviour
 
     private void Update()
     {
-        if (Target == null || (Target != null && !Target.gameObject.activeInHierarchy) || (LineOfSightOnly && !TargetIsLOS()))
-            Target = GetTarget();
-        UpdateWeaponTransform();
+        if (GlobalReferences.gm.GameActive)
+        {
+            if (Target == null || (Target != null && !Target.gameObject.activeInHierarchy) || (LineOfSightOnly && !TargetIsLOS()))
+                Target = GetTarget();
+            UpdateWeaponTransform();
+        }
+        else
+            Target = null;
     }
 
     public abstract void Shoot();

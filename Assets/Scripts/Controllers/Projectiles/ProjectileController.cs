@@ -39,7 +39,7 @@ public abstract class ProjectileController : MonoBehaviour
             {
                 agent.Health -= Damage;
                 if (agent.Health <= 0)
-                    agent.Death();
+                    agent.DoDeath();
             }
 
             ProjectileCollision(collision);

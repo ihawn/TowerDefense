@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
     public Dictionary<string, ObjectPooler> ObjectPoolers { get; set; }
     public GameObject MasterPooler;
 
+    public UIBaseController UIController;
+
     public List<SpawnController> SpawnControllers { get; set; }
     public GameObject MasterSpawner;
 
@@ -18,6 +20,23 @@ public class GameManager : MonoBehaviour
     public LayerMask LineOfSightMask;
 
     public bool RunPathfinding;
+    public bool GameActive;
+
+    public void StartGame()
+    {
+        foreach (Controller controller in FindObjectsOfType<Controller>())
+        {
+            controller.ResetState();
+            controller.ResetHealth();
+        }
+        GameActive = true;
+    }
+
+    public void GameOver()
+    {
+        GameActive = false;
+        UIController.GameOverUI();
+    }
 
     void Awake()
     {
