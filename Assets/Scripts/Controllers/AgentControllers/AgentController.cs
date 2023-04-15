@@ -9,6 +9,8 @@ public abstract class AgentController : MonoBehaviour
     public float Distance;
     public float Health;
     public float MaxHealth;
+    public bool IsPossibleTarget;
+    public bool IsStationary;
 
     private string id;
     public string Id
@@ -22,7 +24,6 @@ public abstract class AgentController : MonoBehaviour
     }
     public Path Path { get; set; }
     public Dictionary<string, Node> AllNodes { get { return GlobalReferences.gm.PathfindingMasterController.AllNodes; } }
-
     public Node StartNode { get; set; }
     public Node EndNode { get; set; }
 
@@ -30,12 +31,10 @@ public abstract class AgentController : MonoBehaviour
     {
         Health = MaxHealth;
         Distance = 0;
+        OnEnableEvents();
     }
 
-
+    public abstract void OnEnableEvents();
     public abstract void ConnectToPathGraph();
-
     public abstract void Death();
-
-    public bool IsPossibleTarget;
 }

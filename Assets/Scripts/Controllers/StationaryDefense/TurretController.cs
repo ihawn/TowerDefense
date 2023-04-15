@@ -14,7 +14,11 @@ public class TurretController : StationaryDefense
 
     public override bool CanShoot()
     {
-        return Target != null && InRange(Target);
+        return Target != null 
+            && InRange(Target)
+            && Quaternion.Angle(
+                Quaternion.LookRotation(
+                    Vector3.Normalize(Target.transform.position - transform.position)), transform.rotation) < ShootAngleThreshold;
     }
 
     public override void Shoot()
