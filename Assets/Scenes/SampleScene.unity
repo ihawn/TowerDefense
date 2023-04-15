@@ -1233,7 +1233,7 @@ MonoBehaviour:
   LineOfSightMask:
     serializedVersion: 2
     m_Bits: 64
-  RunPathfinding: 0
+  RunPathfinding: 1
 --- !u!4 &782517211
 Transform:
   m_ObjectHideFlags: 0
@@ -3166,8 +3166,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1524142750}
-  m_RootOrder: -1
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3266,10 +3266,9 @@ Transform:
   m_Children:
   - {fileID: 1550074684}
   - {fileID: 1067700487}
-  - {fileID: 1523535469}
   - {fileID: 1650523455}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1550074683
 GameObject:
@@ -3602,7 +3601,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1698615686
 Transform:
   m_ObjectHideFlags: 0
@@ -3626,7 +3625,7 @@ Transform:
   - {fileID: 173404697}
   - {fileID: 1946938214}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1730939574
 GameObject:
@@ -4280,7 +4279,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2063524814
 Transform:
   m_ObjectHideFlags: 0
