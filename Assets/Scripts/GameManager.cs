@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public GameObject Goal;
 
     public LayerMask LineOfSightMask;
+    public LayerMask DragAndDrop;
 
     public bool RunPathfinding;
     public bool GameActive;
