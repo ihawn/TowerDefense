@@ -4,18 +4,45 @@ public class DragAndDropController : MonoBehaviour
 {
     private float gridSize = 1.0f;
 
-    void Update()
+    public GameObject ActiveObject;
+    public bool Dragging = false;
+
+    void FixedUpdate()
     {
-        Debug.Log("Mouse position: " + Input.mousePosition);
+        SetDragging();
+        GetActiveObject();
+        DoDrag();
+    }
+
+
+    void DoDrag()
+    {
+        if(Dragging && ActiveObject != null)
+        {
+            Vector3 p = Input.mousePosition;
+            p.y = ActiveObject.transform.position.y;
+            ActiveObject.transform.position = Camera.main.ScreenToWorldPoint(p);
+        }
+    }
+
+    void SetDragging()
+    {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if (Input.GetMouseButton(0)
-        && Physics.Raycast(ray, out hit, Mathf.Infinity)
-        && hit.collider.gameObject.tag == "Ground")
+        if (Input.GetMouseButtonDown(0)
+        && Physics.Raycast(ray, out hit, Mathf.Infinity, GlobalReferences.gm.DragAndDrop))
         {
-            Vector3 cursorWorldPoint = hit.point;
-            transform.position = new Vector3(Mathf.Round(cursorWorldPoint.x / gridSize) * gridSize, cursorWorldPoint.y, Mathf.Round(cursorWorldPoint.z / gridSize) * gridSize);
+            Dragging = true;
+            ActiveObject = hit.collider.gameObject.transform.parent.gameObject;
+        }
+    }
+
+    void GetActiveObject()
+    {
+        if (Input.GetMouseButtonUp(0))
+        {
+            Dragging = false;
         }
     }
 }
