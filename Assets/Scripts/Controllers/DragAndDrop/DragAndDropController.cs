@@ -6,6 +6,7 @@ public class DragAndDropController : MonoBehaviour
 
     void Update()
     {
+        Debug.Log("Mouse position: " + Input.mousePosition);
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2046705535071530116}
   - component: {fileID: 2046705535071530123}
   - component: {fileID: 2046705535071530122}
+  - component: {fileID: 4293158599190269495}
   m_Layer: 0
   m_Name: Turret
   m_TagString: DefenseObject
@@ -127,3 +128,15 @@ MonoBehaviour:
   Target: {fileID: 0}
   ProjectilePool: {fileID: 0}
   ShotSpreadMaxAngle: 5
+--- !u!114 &4293158599190269495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2046705535071530121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9570f9b03328c07595f7df48b154caf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
