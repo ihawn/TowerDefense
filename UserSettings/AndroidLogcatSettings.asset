@@ -11,12 +11,6 @@
         {
             "deviceId": "23f94a20011c7ece",
             "name": "com.DefaultCompany.TowerDefense",
-            "processId": 4985,
-            "exited": true
-        },
-        {
-            "deviceId": "23f94a20011c7ece",
-            "name": "com.DefaultCompany.TowerDefense",
             "processId": 8067,
             "exited": true
         },
@@ -37,6 +31,12 @@
             "name": "is.shortcut",
             "processId": 25459,
             "exited": false
+        },
+        {
+            "deviceId": "23f94a20011c7ece",
+            "name": "com.DefaultCompany.TowerDefense",
+            "processId": 5389,
+            "exited": true
         }
     ],
     "m_Tags": {

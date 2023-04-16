@@ -27,9 +27,6 @@ public class TestAgentController : AgentController
             Path = AStar.GetShortestPath(StartNode.Id, EndNode.Id, AllNodes);
         }
 
-        if (Path != null && Distance > Path.PathLength - 0.04f)
-            OnGoalReached();
-
         Distance += Speed * Time.deltaTime;
 
         if (Path.Distances.Any())
