@@ -43,4 +43,5 @@ public abstract class AgentController : Controller
     public abstract void OnEnableEvents();
     public abstract void Movement();
     public abstract void ConnectToPathGraph();
+    public abstract void OnGoalReached();
 }
