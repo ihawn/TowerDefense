@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Cinemachine;
 
 
 public class TestAgentController : AgentController
@@ -26,8 +27,8 @@ public class TestAgentController : AgentController
             Path = AStar.GetShortestPath(StartNode.Id, EndNode.Id, AllNodes);
         }
 
-        if (Path != null && Distance > 0.95f * Path.PathLength)
-            gameObject.SetActive(false);
+        if (Path != null && Distance > Path.PathLength - 0.04f)
+            OnGoalReached();
 
         Distance += Speed * Time.deltaTime;
 
@@ -54,6 +55,14 @@ public class TestAgentController : AgentController
 
     public override void ResetState()
     {
+        gameObject.SetActive(false);
+    }
+
+    public override void OnGoalReached()
+    {
+        GameObject particles = GlobalReferences.gm.ObjectPoolers["TestAgentExplosion"].GetPooledObject();
+        particles.transform.position = transform.position;
+        GetComponent<CinemachineImpulseSource>().GenerateImpulse();
         gameObject.SetActive(false);
     }
 }
