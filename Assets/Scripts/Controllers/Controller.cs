@@ -39,6 +39,10 @@ public abstract class Controller : MonoBehaviour
     {
         if (obj != null && Side != obj.Side)
         {
+            AgentController agent = obj.GetComponent<AgentController>();
+            if (agent != null)
+                agent.OnGoalReached();
+
             Health -= obj.Damage;
             if (Health <= 0)
                 DoDeath();
